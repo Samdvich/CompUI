@@ -52,7 +52,7 @@
             body {
                 display: grid;
                 grid-template-columns: auto 30% auto;
-                grid-template-rows: 33.333% 33.333% 33.333%;
+                grid-template-rows: auto 20% 5% 20% 15%;
                 margin: 0;
                 padding: 0;
             }
@@ -79,7 +79,7 @@
             }
 
             .password {
-                grid-row: 3;
+                grid-row: 4;
             }
 
             .user-field:hover ~ .user , .password-field:hover ~ .password {
@@ -100,8 +100,9 @@
             .user-field , .password-field {
                 display: grid;
                 grid-column: 2;
-                height: 20%;
+                height: 35%;
                 margin: auto;
+                margin-bottom: 0;
                 background-color: transparent;
                 border-radius: 20px;
                 background-color: darkgray;
@@ -117,7 +118,7 @@
             }
 
             .password-field {
-                grid-row: 3;
+                grid-row: 4;
                 width: 90%;
             }
 
