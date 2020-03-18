@@ -93,7 +93,7 @@
                 animation-name: boing;
                 animation-duration: 2s;
                 animation-iteration-count: infinite;
-            } /*Currently Not Working*/
+            }
             
             .user-field , .password-field {
                 display: grid;
