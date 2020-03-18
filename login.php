@@ -71,56 +71,56 @@
                 grid-template-columns: auto;
             }
             
-                .user-label , .password-label {
-                    display: grid;
-                    grid-column: 1;
-                    margin: auto;
-                    margin-top: 0;
-                    font-family: 'Bungee', regular;
-                    color: white;
-                    font-size: 350%;
-                }
-                
-                .user-label {
-                    grid-row: 1;
-                }
-                
-                .password-label {
-                    grid-row: 3;
-                }
-                
-                .user-field:hover + label , .password-field:hover + label {
-                    animation-name: boing;
-                    animation-duration: 2s;
-                    animation-iteration-count: infinite;
-                }
-                
-                .user-field , .password-field {
-                    display: grid;
-                    grid-column: 1;
-                    height: 35%;
-                    width: 100%;
-                    margin: auto;
-                    margin-bottom: 0;
-                    background-color: transparent;
-                    border-radius: 20px;
-                    background-color: darkgray;
-                    cursor: text;
-                    opacity: 50%;
-                    padding: 0;
-                    padding-left: 5%;
-                    padding-right: 5%;
-                }
-                
-                .user-field {
-                    grid-row: 1;
-                    width: 70%;
-                }
-                
-                .password-field {
-                    grid-row: 3;
-                    width: 90%;
-                }
+            .user-label , .password-label {
+                display: grid;
+                grid-column: 1;
+                margin: auto;
+                margin-top: 0;
+                font-family: 'Bungee', regular;
+                color: white;
+                font-size: 350%;
+            }
+            
+            .user-label {
+                grid-row: 1;
+            }
+            
+            .password-label {
+                grid-row: 3;
+            }
+            
+            .user-field:hover + label , .password-field:hover + label {
+                animation-name: boing;
+                animation-duration: 2s;
+                animation-iteration-count: infinite;
+            } /*Currently Not Working*/
+            
+            .user-field , .password-field {
+                display: grid;
+                grid-column: 1;
+                height: 35%;
+                width: 100%;
+                margin: auto;
+                margin-bottom: 0;
+                background-color: transparent;
+                border-radius: 20px;
+                background-color: darkgray;
+                cursor: text;
+                opacity: 50%;
+                padding: 0;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+            
+            .user-field {
+                grid-row: 1;
+                width: 70%;
+            }
+            
+            .password-field {
+                grid-row: 3;
+                width: 90%;
+            }
         </style>
     </body>
 </html>
