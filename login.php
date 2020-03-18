@@ -6,7 +6,7 @@
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $DB_Name);
-
+     
     // Check connection
       if ($conn->connect_error) {
         die("nope: <br> error: " . $conn->connect_error);
@@ -19,75 +19,41 @@
     <head>
         <title></title>
     </head>
-
+    
     <body>
         <object class='track' data="track.svg" type="image/svg+xml"></object>
-
-        <form class='user-field'>
-            <input id='user' type='text' placeholder="Username" maxlength='20'>
+        
+        <form class='login-form' action='login.php'>
+            <input class='user-field' name='user-field' type='text' placeholder="Username" maxlength='20' type='POST'>
+                <label class='user-label'>User</label>
+            <input class='password-field' name='password-field' type='password' placeholder="Password" maxlength='40' type='POST'>
+                <label class='password-label'>Password</label>
         </form>
-        <form class='password-field'>
-            <input id='password' type='password' placeholder="Password" maxlength='40'>
-        </form>
-
-        <div class='user'>User</div>
-        <div class='password'>Password</div>
-
+        
         <style>
             @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
-
+            
             @keyframes boing {
                 from {margin-top: 0;}
                 50% {margin-top: 2%;}
                 to {margin-top: 0;}
             }
-
+            
             html {
                 display: grid;
                 height: 100%;
                 width: 100%;
                 background-color: #B9D07F;
             }
-
-            body {
+            
+            body { /*Pretty much just contains the form grid system*/
                 display: grid;
                 grid-template-columns: auto 30% auto;
-                grid-template-rows: auto 20% 5% 20% 15%;
+                grid-template-rows: auto 50% 20%;
                 margin: 0;
                 padding: 0;
             }
-
-            .track {
-                display: grid;
-                grid-column: 2;
-                grid-row: 1 / 4;
-                margin: auto;
-            }
-
-            .user , .password {
-                display: grid;
-                grid-column: 2;
-                margin: auto;
-                margin-top: 0;
-                font-family: 'Bungee', regular;
-                color: white;
-                font-size: 350%;
-            }
-
-            .user {
-                grid-row: 2;
-            }
-
-            .password {
-                grid-row: 4;
-            }
-
-            .user-field:hover ~ .user , .password-field:hover ~ .password {
-                animation-name: boing;
-                animation-duration: 2s;
-                animation-iteration-count: infinite;
-            }
-
+            
             input {
                 background-color: transparent;
                 outline: none;
@@ -96,36 +62,65 @@
                 font-weight: 700;
                 padding: 0;
             }
-
-            .user-field , .password-field {
+            
+            .login-form {
                 display: grid;
                 grid-column: 2;
-                height: 35%;
-                margin: auto;
-                margin-bottom: 0;
-                background-color: transparent;
-                border-radius: 20px;
-                background-color: darkgray;
-                opacity: 50%;
-                padding: 0;
-                padding-left: 5%;
-                padding-right: 5%;
-            }
-
-            .user-field {
                 grid-row: 2;
-                width: 70%;
+                grid-template-rows: 40% 10% 40%;
+                grid-template-columns: auto;
             }
-
-            .password-field {
-                grid-row: 4;
-                width: 90%;
-            }
-
-            #user , #password {
-                width: 100%;
-                cursor: text;
-            }
+            
+                .user-label , .password-label {
+                    display: grid;
+                    grid-column: 1;
+                    margin: auto;
+                    margin-top: 0;
+                    font-family: 'Bungee', regular;
+                    color: white;
+                    font-size: 350%;
+                }
+                
+                .user-label {
+                    grid-row: 1;
+                }
+                
+                .password-label {
+                    grid-row: 3;
+                }
+                
+                .user-field:hover + label , .password-field:hover + label {
+                    animation-name: boing;
+                    animation-duration: 2s;
+                    animation-iteration-count: infinite;
+                }
+                
+                .user-field , .password-field {
+                    display: grid;
+                    grid-column: 1;
+                    height: 35%;
+                    width: 100%;
+                    margin: auto;
+                    margin-bottom: 0;
+                    background-color: transparent;
+                    border-radius: 20px;
+                    background-color: darkgray;
+                    cursor: text;
+                    opacity: 50%;
+                    padding: 0;
+                    padding-left: 5%;
+                    padding-right: 5%;
+                }
+                
+                .user-field {
+                    grid-row: 1;
+                    width: 70%;
+                }
+                
+                .password-field {
+                    grid-row: 3;
+                    width: 90%;
+                }
         </style>
     </body>
 </html>
