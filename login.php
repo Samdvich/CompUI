@@ -11,7 +11,8 @@
       if ($conn->connect_error) {
         die("nope: <br> error: " . $conn->connect_error);
     }
-    else echo "yup";
+    else
+    $database_variable = "yup";
 ?>
 
 <!DOCTYPE HTML>
@@ -22,12 +23,41 @@
     
     <body>
         <object class='track' data="track.svg" type="image/svg+xml"></object>
+
+        <?php
+            $ffs_variable = "";
+            
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (empty($_POST['user-field']) && (empty($_POST['password-field']))) {
+                    $ffs_variable = "Error: no details inputted";
+                }
+                
+                elseif (empty($_POST['user-field'])) {
+                    $ffs_variable = "Error: no username input";
+                }
+                
+                elseif (empty($_POST['password-field'])) {
+                    $ffs_variable = "Error: no password input";
+                }
+                
+                else {
+                    $etc;
+                }
+            }
+        ?>
         
-        <form class='login-form' action='login.php'>
-            <input class='user-field' name='user-field' type='text' placeholder="Username" maxlength='20' type='POST'>
+        <p class='error-info'>
+            Database Status: <?php echo $database_variable; ?>
+            <br>
+            <?php echo $ffs_variable; ?>
+        </p>
+        
+        <form method='POST' class='login-form' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
+            <input type='POST' class='user-field' name='user-field' type='text' placeholder="Username" maxlength='20'>
                 <label class='user-label'>User</label>
-            <input class='password-field' name='password-field' type='password' placeholder="Password" maxlength='40' type='POST'>
+            <input type='POST' class='password-field' name='password-field' type='password' placeholder="Password" maxlength='40'>
                 <label class='password-label'>Password</label>
+            <input type='SUBMIT' class='login-submit' name='login-submit'>
         </form>
         
         <style>
@@ -48,7 +78,7 @@
             
             body { /*Pretty much just contains the form grid system*/
                 display: grid;
-                grid-template-columns: auto 30% auto;
+                grid-template-columns: 30% 40% 30%;
                 grid-template-rows: auto 50% 20%;
                 margin: 0;
                 padding: 0;
@@ -58,7 +88,7 @@
                 background-color: transparent;
                 outline: none;
                 border: none;
-                font-size: 155%;
+                font-size: 140%;
                 font-weight: 700;
                 padding: 0;
             }
@@ -69,6 +99,17 @@
                 grid-row: 2;
                 grid-template-rows: 40% 10% 40%;
                 grid-template-columns: auto;
+            }
+            
+            .login-submit {
+                display: none;
+            }
+            
+            .error-info {
+                display: grid;
+                grid-column: 1;
+                grid-row: 1;
+                margin: 0;
             }
             
             .user-label , .password-label {
