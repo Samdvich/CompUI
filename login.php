@@ -53,11 +53,11 @@
         </p>
         
         <form method='POST' class='login-form' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
-            <input type='POST' class='user-field' name='user-field' type='text' placeholder="Username" maxlength='20'>
+            <input type='text' class='user-field' name='user-field' placeholder="Email" maxlength='20' method='POST'>
                 <label class='user-label'>User</label>
-            <input type='POST' class='password-field' name='password-field' type='password' placeholder="Password" maxlength='40'>
+            <input type='password' class='password-field' name='password-field' placeholder="Password" maxlength='40' method='POST'>
                 <label class='password-label'>Password</label>
-            <input type='SUBMIT' class='login-submit' name='login-submit'>
+            <input type='submit' class='login-submit' name='login-submit' method='POST'>
         </form>
         
         <style>
