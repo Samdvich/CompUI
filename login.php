@@ -55,7 +55,7 @@
         <form method='POST' class='login-form' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
             <input type='text' class='user-field' name='user-field' placeholder="Email" maxlength='20' method='POST'>
                 <label class='user-label'>User</label>
-            <input type='password' class='password-field' name='password-field' placeholder="Password" maxlength='40' method='POST'>
+            <input type='password' class='password-field' name='password-field' placeholder="Password" maxlength='50' method='POST'>
                 <label class='password-label'>Password</label>
             <input type='submit' class='login-submit' name='login-submit' method='POST'>
         </form>
@@ -76,7 +76,7 @@
                 background-color: #B9D07F;
             }
             
-            body { /*Pretty much just contains the form grid system*/
+            body {
                 display: grid;
                 grid-template-columns: 30% 40% 30%;
                 grid-template-rows: auto 50% 20%;
@@ -130,7 +130,7 @@
                 grid-row: 3;
             }
             
-            .user-field:hover + label , .password-field:hover + label {
+            .user-field:hover + label , .user-field:focus + label , .password-field:hover + label , .password-field:focus + label {
                 animation-name: boing;
                 animation-duration: 2s;
                 animation-iteration-count: infinite;
