@@ -29,19 +29,52 @@
             
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (empty($_POST['user-field']) && (empty($_POST['password-field']))) {
-                    $ffs_variable = "Error: no details inputted";
+                    $ffs_variable = "Error: Please enter details";
                 }
                 
                 elseif (empty($_POST['user-field'])) {
-                    $ffs_variable = "Error: no username input";
+                    $ffs_variable = "Error: Please enter email";
                 }
                 
                 elseif (empty($_POST['password-field'])) {
-                    $ffs_variable = "Error: no password input";
+                    $ffs_variable = "Error: Please enter password";
+                }
+                
+                elseif (strpos($_POST['password-field']," ") && (strpos($_POST['user-field']," "))) {
+                    $ffs_variable = "Error: Please remove spaces";
                 }
                 
                 else {
-                    $etc;
+                    $ffs_variable = "No errors";
+                    // Prevent SQL injection with 'prepare' under the $stmt variable
+                    if ($secure = $conn->prepare('SELECT id, password FROM accounts WHERE email = ?')) {
+                    	// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
+                    	$secure->bind_param('s', $_POST['user-field']);
+                    	$secure->execute();
+                    	// Store the result so we can check if the account exists in the database.
+                    	$secure->store_result();
+                        if ($secure->num_rows > 0) {
+    	                    $secure->bind_result($id, $password);
+                        	$secure->fetch();
+                        	// Account exists, now we verify the password.
+                        	// Note: remember to use password_hash in your registration file to store the hashed passwords.
+                        	if (password_verify($_POST['password-field'], $password)) {
+                        		// Verification success! User has loggedin!
+                        		// Create sessions so we know the user is logged in, they basically act like cookies but remember the data on the server.
+                        		session_regenerate_id();
+                        		$_SESSION['loggedin'] = TRUE;
+                        		$_SESSION['name'] = $_POST['user-field'];
+                        		$_SESSION['id'] = $id;
+                        		header('Location: recognised.php');
+                        	} else {
+                        		$ffs_variable = 'Error: Incorrect password';
+                        	}
+                        } else {
+                        	$ffs_variable = 'Error: Unknown email';
+                        }
+                    } else {
+                        $ffs_varialbe = 'Error: Service outage';
+                    }
                 }
             }
         ?>
