@@ -9,10 +9,10 @@
      
     // Check connection
       if ($conn->connect_error) {
-        die("nope: <br> error: " . $conn->connect_error);
+        die("Not Connected: <br>" . $conn->connect_error);
     }
     else
-    $database_variable = "yup";
+    $database_variable = "Connected";
 ?>
 
 <!DOCTYPE HTML>
@@ -61,11 +61,11 @@
                         	if (password_verify($_POST['password-field'], $password)) {
                         		// Verification success! User has loggedin!
                         		// Create sessions so we know the user is logged in, they basically act like cookies but remember the data on the server.
-                        		session_regenerate_id();
+                        		session_start();
                         		$_SESSION['loggedin'] = TRUE;
                         		$_SESSION['name'] = $_POST['user-field'];
                         		$_SESSION['id'] = $id;
-                        		header('Location: recognised.php');
+                        		header('Location: index.php');
                         	} else {
                         		$ffs_variable = 'Error: Incorrect password';
                         	}
