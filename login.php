@@ -163,7 +163,7 @@
                 grid-row: 3;
             }
             
-            .user-field:hover + label , .user-field:focus + label , .password-field:hover + label , .password-field:focus + label {
+            .user-field:focus + label , .password-field:focus + label {
                 animation-name: boing;
                 animation-duration: 2s;
                 animation-iteration-count: infinite;
