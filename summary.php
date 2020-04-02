@@ -20,7 +20,10 @@
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang='en'>
+    <head>
+        <title>CompUI Panel</title>
+    </head>
     <body>
         <form>
             <a href='logout.php'>Logout</a>

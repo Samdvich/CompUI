@@ -16,9 +16,9 @@
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang='en'>
     <head>
-        <title></title>
+        <title>CompUI Login</title>
     </head>
     
     <body>
