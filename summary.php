@@ -17,6 +17,9 @@
     $database_variable = "Connected";
     
     echo $_SESSION['name'];
+    if (!isset($_SESSION['name'])) {
+        header("Location: index.php");
+    }
 ?>
 
 <!DOCTYPE HTML>
