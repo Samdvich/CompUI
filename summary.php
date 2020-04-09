@@ -37,7 +37,7 @@
         </div>
         
         <form class='logout-form'>
-          <a id='logout' href='logout.php'>Logout <?php echo $_SESSION['name']; ?></a>
+          <a id='logout' href='logout.php'>Logout <?php echo $_SESSION['name'] . " of " . $_SESSION['house']; ?></a>
         </form>
         
         <style>
@@ -88,6 +88,7 @@
           
           .logout-form {
             grid-row: 4;
+            grid-column: 1 / 4;
           }
         </style>
     </body>
