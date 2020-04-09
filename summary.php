@@ -19,6 +19,25 @@
     if (!isset($_SESSION['name'])) {
         header("Location: index.php");
     }
+
+        if (isset($_POST['house-change'])) {
+            unset($_SESSION['house']); // Istead of resetting the entire session, only reset important variables
+            $sql = "UPDATE accounts SET house='" . $_POST['house-change'] . "' WHERE userID=" . $_SESSION['id'] . "";
+            $_SESSION['house'] = $_POST['house-change']; // Redeclare the unset variables
+        }
+                
+        if ($_SESSION['house'] == "bilin bilin") {
+            $house_color = "darkgreen";
+        }
+        elseif ($_SESSION['house'] == "barnes") {
+            $house_color = "red";
+        }
+        elseif ($_SESSION['house'] == "francis") {
+            $house_color = "orange";
+        }
+        elseif ($_SESSION['house'] == "karle") {
+            $house_color = "navy";
+        }
 ?>
 
 <!DOCTYPE HTML>
@@ -27,33 +46,40 @@
         <title>CompUI Panel</title>
     </head>
     <body>
-        <div class='header'>Karle House</div>
+        <div class='header'><?php echo $_SESSION['house'] ?></div>
         
         <div class='info'>
           <span id='points'>
-            0
-            <br>
-            Points
+              0
+              <br>
+              Points
           </span>
           <span id='members'>
-            0
-            <br>
-            Members
-            </span>
+              0
+              <br>
+              Members
+          </span>
           <span id='attendance'>
-            83%
-            <br>
-            Attendance
-            </span>
+              83%
+              <br>
+              Attendance
+          </span>
           <span id='rank'>
-            #0
-            <br>
-            Rank
-            </span>
+              #0
+              <br>
+              Rank
+          </span>
         </div>
         
         <form class='logout-form'>
           <a id='logout' href='logout.php'>Logout <?php echo $_SESSION['name'] . " of " . $_SESSION['house']; ?></a>
+        </form>
+        
+        <form class='house-form' method='POST' action"_self">
+            <input type='submit' name='house-change' value='bilin bilin'>
+            <input type='submit' name='house-change' value='barnes'>
+            <input type='submit' name='house-change' value='francis'>
+            <input type='submit' name='house-change' value='karle'>
         </form>
         
         <style>
@@ -78,7 +104,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: navy;
+            background-color: <?php echo $house_color; ?>;
             height: 100%;
             width: 100%;
             font-family: 'Bungee', regular;
@@ -107,6 +133,11 @@
           
           .logout-form {
             grid-row: 4;
+            grid-column: 1 / 4;
+          }
+          
+          .house-form {
+            grid-row: 5;
             grid-column: 1 / 4;
           }
         </style>
