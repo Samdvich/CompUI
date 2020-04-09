@@ -30,10 +30,26 @@
         <div class='header'>Karle House</div>
         
         <div class='info'>
-          <span id='points'>0</span>
-          <span id='members'>0</span>
-          <span id='attendance'>83%</span>
-          <span id='rank'>#0</span>
+          <span id='points'>
+            0
+            <br>
+            Points
+          </span>
+          <span id='members'>
+            0
+            <br>
+            Members
+            </span>
+          <span id='attendance'>
+            83%
+            <br>
+            Attendance
+            </span>
+          <span id='rank'>
+            #0
+            <br>
+            Rank
+            </span>
         </div>
         
         <form class='logout-form'>
@@ -76,6 +92,9 @@
             grid-column: 1 / 4;
             background-color: #EAEAEA;
             grid-template-columns: 25% 25% 25% 25%;
+            font-family: Roboto;
+            font-weight: 300;
+            font-size: 80%;
           }
         
           span {
