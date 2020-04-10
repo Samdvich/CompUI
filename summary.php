@@ -24,6 +24,12 @@
             unset($_SESSION['house']); // Istead of resetting the entire session, only reset important variables
             $sql = "UPDATE accounts SET house='" . $_POST['house-change'] . "' WHERE userID=" . $_SESSION['id'] . "";
             $_SESSION['house'] = $_POST['house-change']; // Redeclare the unset variables
+            
+            if ($conn->query($sql) === TRUE) {
+                echo "<p class='response'>Record updated successfully</p>";
+            } else {
+            echo "<p class='response'> Error updating record:</p>" . $conn->error;
+            }
         }
                 
         if ($_SESSION['house'] == "bilin bilin") {
@@ -139,6 +145,14 @@
           .house-form {
             grid-row: 5;
             grid-column: 1 / 4;
+            text-align: center;
+          }
+          
+          .response {
+            grid-row: 5;
+            grid-column: 1 / 4;
+            padding-top: 20px;
+            text-align: center;
           }
         </style>
     </body>
