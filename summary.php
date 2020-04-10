@@ -60,10 +60,10 @@
               <br>
               Points
           </span>
-          <span id='members'>
+          <span id='wins'>
               0
               <br>
-              Members
+              Wins
           </span>
           <span id='attendance'>
               83%
