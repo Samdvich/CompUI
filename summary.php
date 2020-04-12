@@ -78,15 +78,18 @@
         </div>
         
         <form class='logout-form'>
-          <a id='logout' href='logout.php'>Logout <?php echo $_SESSION['name'] . " of " . $_SESSION['house']; ?></a>
+          <a id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
         </form>
         
-        <form class='house-form' method='POST' action"_self">
+        <?php if ($_SESSION['type'] == "admin") {
+            echo "<form class='house-form' method='POST'>
             <input type='submit' name='house-change' value='bilin bilin'>
             <input type='submit' name='house-change' value='barnes'>
             <input type='submit' name='house-change' value='francis'>
             <input type='submit' name='house-change' value='karle'>
-        </form>
+            </form>";
+        }
+        ?>
         
         <style>
           @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
