@@ -44,6 +44,12 @@
         elseif ($_SESSION['house'] == "karle") {
             $house_color = "navy";
         }
+        elseif ($_SESSION['house'] == "temporary") {
+            $house_color = "gray";
+        }
+        else {
+            header("Location: login.php");
+        }
 ?>
 
 <!DOCTYPE HTML>
@@ -88,9 +94,9 @@
             <input type='submit' name='house-change' value='karle'>
             </form>";
             echo "<form class='navmenu' method='POST'>
-            <input type='submit' formaction='competitions.php' value='Competitions'>
-            <input type='submit' formaction='accounts.php' value='Accounts'>
-            <input type='submit' formaction='notices.php' value='Notices'>
+            <input type='submit' formaction='admin/competitions.php' value='Competitions'>
+            <input type='submit' formaction='admin/accounts.php' value='Accounts'>
+            <input type='submit' formaction='admin/notices.php' value='Notices'>
             </form>";
         };
         ?>
