@@ -77,23 +77,23 @@
           </span>
         </div>
         
-          <a class='logout-form' id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
+        <a class='logout-form' id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
         
-        <?php if ($_SESSION['type'] == "admin") {
+        <?php
+        if ($_SESSION['type'] == "admin") {
             echo "<form class='house-form' method='POST'>
             <input type='submit' name='house-change' value='bilin bilin'>
             <input type='submit' name='house-change' value='barnes'>
             <input type='submit' name='house-change' value='francis'>
             <input type='submit' name='house-change' value='karle'>
             </form>";
-        }
-        ?>
-        
-        <form class='navmenu' method='POST'>
+            echo "<form class='navmenu' method='POST'>
             <input type='submit' formaction='competitions.php' value='Competitions'>
             <input type='submit' formaction='accounts.php' value='Accounts'>
             <input type='submit' formaction='notices.php' value='Notices'>
-        </form>
+            </form>";
+        };
+        ?>
         
         <style>
           @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
