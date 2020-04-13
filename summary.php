@@ -77,9 +77,7 @@
           </span>
         </div>
         
-        <form class='logout-form'>
-          <a id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
-        </form>
+          <a class='logout-form' id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
         
         <?php if ($_SESSION['type'] == "admin") {
             echo "<form class='house-form' method='POST'>
@@ -90,6 +88,12 @@
             </form>";
         }
         ?>
+        
+        <form class='navmenu' method='POST'>
+            <input type='submit' formaction='competitions.php' value='Competitions'>
+            <input type='submit' formaction='accounts.php' value='Accounts'>
+            <input type='submit' formaction='notices.php' value='Notices'>
+        </form>
         
         <style>
           @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
@@ -103,7 +107,7 @@
           }
           
           body {
-            grid-template-rows: 18% 6% 30%;
+            grid-template-rows: 18% 6% 30% 30% 6%;
             grid-template-columns: 0; /* Add columns later? */
           }
           
@@ -141,7 +145,7 @@
           }
           
           .logout-form {
-            grid-row: 4;
+            grid-row: 5;
             grid-column: 1 / 4;
           }
           
@@ -156,6 +160,29 @@
             grid-column: 1 / 4;
             padding-top: 20px;
             text-align: center;
+          }
+          
+          .navmenu {
+            display: grid;
+            grid-row: 4;
+            grid-column: 1 / 4;
+            margin: auto;
+            text-align: center;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 100%;
+            height: 100%;
+          }
+          
+          .navmenu input {
+            all: unset;
+            font-family: 'Bungee', regular;
+            font-size: 200%;
+            cursor: pointer;
+            color: gray;
+          }
+          
+          .navmenu input:hover {
+            color: <?php echo $house_color; ?>;
           }
         </style>
     </body>
