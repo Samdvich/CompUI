@@ -86,12 +86,19 @@
         <a class='logout-form' id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
         
         <?php
-        if ($_SESSION['type'] == "admin") {
-            echo "<form class='house-form' method='POST'>
+        $quick_change = "<form class='house-form' method='POST'>
             <input type='submit' name='house-change' value='bilin bilin'>
             <input type='submit' name='house-change' value='barnes'>
             <input type='submit' name='house-change' value='francis'>
-            <input type='submit' name='house-change' value='karle'>
+            <input type='submit' name='house-change' value='karle'>";
+            
+        if ($_SESSION['type'] == "temp") {
+            echo $quick_change . "
+            <input type='submit' name='house-change' value='temporary'>
+            </form>";
+        }
+        elseif ($_SESSION['type'] == "admin") {
+            echo $quick_change . "
             </form>";
             echo "<form class='navmenu' method='POST'>
             <input type='submit' formaction='admin/competitions.php' value='Competitions'>
