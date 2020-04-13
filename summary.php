@@ -50,6 +50,11 @@
         else {
             header("Location: login.php");
         }
+        
+        if ($_SESSION['type'] == "temp") {
+            $sql = "UPDATE accounts SET house='temporary' WHERE userID=" .$_SESSION['id'] . "";
+            $conn->query($sql);
+        }
 ?>
 
 <!DOCTYPE HTML>
