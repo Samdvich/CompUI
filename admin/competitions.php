@@ -26,4 +26,22 @@
   <head>
     <title>Accounts | Competitions</title>
   </head>
+  <body>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
+      
+      html, body {
+        display: grid;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+      
+      body {
+        grid-template-rows: 0;
+        grid-template-columns: 0;
+      }
+    </style>
+  </body>
 </html>
