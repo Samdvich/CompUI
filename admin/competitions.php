@@ -52,7 +52,7 @@
                 $secure->bind_result($bilin_bilin, $barnes, $francis, $karle);
                 $secure->fetch();
                 echo '<tr>
-                  <td id="event"><a href=../event.php?name=' . $eventname . '>' . $eventname . '</a></td>
+                  <td id="event"><a href=../event.php?name=' . urlencode($eventname) . '>' . $eventname . '</a></td>
                   <td id="spacer"></td>
                   <td id="bilin-bilin">' . $bilin_bilin . '</td>
                   <td id="barnes">' . $barnes . '</td>

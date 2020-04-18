@@ -18,13 +18,14 @@
         header("Location: index.php");
     }
     
-    echo $_GET['name']
+    $name = urldecode($_GET['name']); // Decoding the URL encoding in admin/competitions.php (currently not needed, but precautionary)
+    echo $name; // Temporary (testing accuracy of the string)
 ?>
 
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title><?php echo $_GET['name']; ?></title>
+        <title><?php echo $name; ?></title>
     </head>
     <body>
     </body>
