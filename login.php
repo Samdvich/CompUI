@@ -19,9 +19,6 @@
   <head>
     <title>CompUI Login</title>
   </head>
-    
-  <body>
-    <object class='track' data="track.svg" type="image/svg+xml"></object>
 
     <?php
       $ffs_variable = "";
@@ -47,7 +44,7 @@
     <form method='POST' class='login-form' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
       <input type='text' class='user-field' name='user-field' id='user-field' placeholder="Email" maxlength='20' method='POST'>
         <label for='user-field' class='user-label'>User</label>
-      <input type='password' class='password-field' name='password-field' id='user-field' placeholder="Password" maxlength='50' method='POST'>
+      <input type='password' class='password-field' name='password-field' id='password-field' placeholder="Password" maxlength='50' method='POST'>
         <label for='password-field' class='password-label'>Password</label>
       <input type='submit' class='login-submit' name='login-submit' method='POST'>
     </form>
