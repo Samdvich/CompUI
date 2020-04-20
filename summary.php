@@ -83,7 +83,7 @@
           
       .header { grid-row: 1; grid-column: 1 / 4; display: flex; justify-content: center; align-items: center; background-color: <?php echo $house_color; ?>; height: 100%;width: 100%; font-family: 'Bungee', regular; font-size: 350%; color: white; }
           
-      .info { display: grid; grid-row: 3; grid-column: 1 / 4; background-color: #EAEAEA; grid-template-columns: 25% 25% 25% 25; font-family: Roboto; font-weight: 300; font-size: 80%; }
+      .info { display: grid; grid-row: 3; grid-column: 1 / 4; background-color: #EAEAEA; grid-template-columns: 25% 25% 25% 25%; font-family: Roboto; font-weight: 300; font-size: 80%; }
         
       span { all: unset; display: grid; text-align: center; align-items: center; font-size: 350%; }
           
