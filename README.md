@@ -5,6 +5,7 @@ A web application for schools with team-based competitive events.
 - [x] Remaster README.md
 - [x] Refactor code to minify
 - [x] Fix summary panel after refactoring (#4)
+- [ ] Add logout button to summary panel
 - [ ] Finish accounts.php (admin menu item)
 - [ ] Finish notices.php (admin menu item)
 - [ ] Allow admins to generate new accounts and potentially change account types (#2)
