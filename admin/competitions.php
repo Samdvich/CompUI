@@ -48,6 +48,8 @@
           <td id="francis">' . $francis . '</td>
           <td id="karle">' . $karle . '</td>
           </tr>';}}
+      else
+        {$sql = "ALTER TABLE competitions AUTO_INCREMENT = 1"; mysqli_query($conn, $sql);}
   
       echo '</table>';
     ?>
