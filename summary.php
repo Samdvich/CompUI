@@ -48,7 +48,9 @@
   </head>
   <body>
     <div class='header'>
-      <p id='heading'><?php echo $_SESSION['house'] ?></p>
+      <a href='logout.php' id='home'><svg class="bi bi-box-arrow-in-left" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.854 11.354a.5.5 0 000-.708L5.207 8l2.647-2.646a.5.5 0 10-.708-.708l-3 3a.5.5 0 000 .708l3 3a.5.5 0 00.708 0z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M15 8a.5.5 0 00-.5-.5h-9a.5.5 0 000 1h9A.5.5 0 0015 8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M2.5 14.5A1.5 1.5 0 011 13V3a1.5 1.5 0 011.5-1.5h8A1.5 1.5 0 0112 3v1.5a.5.5 0 01-1 0V3a.5.5 0 00-.5-.5h-8A.5.5 0 002 3v10a.5.5 0 00.5.5h8a.5.5 0 00.5-.5v-1.5a.5.5 0 011 0V13a1.5 1.5 0 01-1.5 1.5h-8z" clip-rule="evenodd"/>
+</svg></a>
+      <p id='heading'><?php echo $_SESSION['house']; ?></p>
     </div>
     
     <div class='info'>
@@ -57,8 +59,6 @@
       <span id='attendance'>83%<br>Attendance</span>
       <span id='rank'>#0<br>Rank</span>
     </div>
-        
-    <a class='logout-form' id='logout' href='logout.php'><?php echo "Logout " . $_SESSION['type'] . " " . $_SESSION['name'] . " of " . $_SESSION['house'] . "." ?></a>
         
     <?php
       $quick_change = "<form class='house-form' method='POST'>
@@ -85,13 +85,13 @@
           
       .header { grid-row: 1; grid-column: 1 / 4; background-color: <?php echo $house_color; ?>; height: 100%; width: 100%; font-family: 'Bungee', regular; display: grid; grid-template-columns: 8% auto 8%; }
       
+      #home { grid-column: 1; color: white; margin: auto; }
+      
       #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; }
           
       .info { display: grid; grid-row: 3; grid-column: 1 / 4; background-color: #EAEAEA; grid-template-columns: 25% 25% 25% 25%; font-family: Roboto; font-weight: 300; font-size: 80%; }
         
       span { all: unset; display: grid; text-align: center; align-items: center; font-size: 350%; }
-          
-      .logout-form { grid-row: 5; grid-column: 1 / 4; }
           
       .house-form { grid-row: 5; grid-column: 1 / 4; text-align: center; }
           
