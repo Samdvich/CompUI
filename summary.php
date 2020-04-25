@@ -32,11 +32,19 @@
   $secure->fetch();
         
   if ($_SESSION['type'] == "temp")
-    {$sql = "UPDATE accounts SET house='temporary' WHERE userID=" . $_SESSION['id'] . ""; $conn->query($sql);}
+    {$sql = "UPDATE accounts SET house='temporary' WHERE userID=". $_SESSION['id'] .""; $conn->query($sql);}
   
-  if ($result = $conn->query("SELECT SUM(`" . $_SESSION['house'] . "`) AS total FROM competitions")) /* Sum of house points */
+  if ($result = $conn->query("SELECT SUM(`". $_SESSION['house'] ."`) AS total FROM competitions")) /* Sum of house points */
     {while ($row = $result->fetch_assoc())
       {$points = $row['total'];}} // Live house points updater
+      
+  if ($result = $conn->query("SELECT COUNT(`". $_SESSION['house'] ."`) AS count FROM competitions WHERE (`". $_SESSION['house'] ."`) >0"))
+    {while ($row = $result->fetch_assoc())
+      {$events = $row['count'];}}
+      
+  if ($result = $conn->query("SELECT COUNT('house') AS members FROM accounts WHERE house = '". $_SESSION['house'] ."';"))
+    {while ($row = $result->fetch_assoc())
+      {$members = $row['members'];}}
 ?>
 
 <!DOCTYPE HTML>
@@ -46,16 +54,15 @@
   </head>
   <body>
     <div class='header'>
-      <a href='logout.php' id='home'><svg class="bi bi-box-arrow-in-left" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.854 11.354a.5.5 0 000-.708L5.207 8l2.647-2.646a.5.5 0 10-.708-.708l-3 3a.5.5 0 000 .708l3 3a.5.5 0 00.708 0z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M15 8a.5.5 0 00-.5-.5h-9a.5.5 0 000 1h9A.5.5 0 0015 8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M2.5 14.5A1.5 1.5 0 011 13V3a1.5 1.5 0 011.5-1.5h8A1.5 1.5 0 0112 3v1.5a.5.5 0 01-1 0V3a.5.5 0 00-.5-.5h-8A.5.5 0 002 3v10a.5.5 0 00.5.5h8a.5.5 0 00.5-.5v-1.5a.5.5 0 011 0V13a1.5 1.5 0 01-1.5 1.5h-8z" clip-rule="evenodd"/>
-</svg></a>
+      <a href='logout.php' id='home'><svg class="bi bi-box-arrow-in-left" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.854 11.354a.5.5 0 000-.708L5.207 8l2.647-2.646a.5.5 0 10-.708-.708l-3 3a.5.5 0 000 .708l3 3a.5.5 0 00.708 0z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M15 8a.5.5 0 00-.5-.5h-9a.5.5 0 000 1h9A.5.5 0 0015 8z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M2.5 14.5A1.5 1.5 0 011 13V3a1.5 1.5 0 011.5-1.5h8A1.5 1.5 0 0112 3v1.5a.5.5 0 01-1 0V3a.5.5 0 00-.5-.5h-8A.5.5 0 002 3v10a.5.5 0 00.5.5h8a.5.5 0 00.5-.5v-1.5a.5.5 0 011 0V13a1.5 1.5 0 01-1.5 1.5h-8z" clip-rule="evenodd"/></svg></a>
       <p id='heading'><?php echo $_SESSION['house']; ?></p>
     </div>
     
     <div class='info'>
       <span id='points'><?php echo $points ?><br>Points</span>
-      <span id='wins'><?php echo $members ?><br>Members</span>
-      <span id='attendance'>83%<br>Attendance</span>
-      <span id='rank'>#0<br>Rank</span>
+      <span id='members'><?php echo $members ?><br>Members</span>
+      <span id='attendance'>N/A<br>Attendance</span>
+      <span id='events'><?php echo $events ?><br>Events</span>
     </div>
         
     <?php
@@ -87,7 +94,7 @@
       
       #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; }
           
-      .info { display: grid; grid-row: 3; grid-column: 1 / 4; background-color: #EAEAEA; grid-template-columns: 25% 25% 25% 25%; font-family: Roboto; font-weight: 300; font-size: 80%; }
+      .info { display: grid; grid-row: 3; grid-column: 1 / 4; background-color: #EAEAEA; grid-template-columns: repeat(4, 1fr); font-family: Roboto; font-weight: 300; font-size: 80%; }
         
       span { all: unset; display: grid; text-align: center; align-items: center; font-size: 350%; }
           
