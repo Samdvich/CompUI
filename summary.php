@@ -23,22 +23,20 @@
     {echo "<p class='response'>Record updated successfully</p>";}
   else
     {echo "<p class='response'> Error updating record:</p>" . $conn->error;}}
-                
-  if ($_SESSION['house'] == "bilin bilin")
-    {$house_color = "darkgreen";}
-  elseif ($_SESSION['house'] == "barnes")
-    {$house_color = "red";}
-  elseif ($_SESSION['house'] == "francis")
-    {$house_color = "orange";}
-  elseif ($_SESSION['house'] == "karle")
-    {$house_color = "navy";}
-  elseif ($_SESSION['house'] == "temporary")
-    {$house_color = "gray";}
-  else
-    {header("Location: login.php");}
+    
+  $secure = $conn->prepare('SELECT colour, points, members FROM houses WHERE house = ?');
+  $secure->bind_param('s', $_SESSION['house']);
+  $secure->execute();
+  $secure->store_result();
+  $secure->bind_result($house_color, $points, $members);
+  $secure->fetch();
         
   if ($_SESSION['type'] == "temp")
     {$sql = "UPDATE accounts SET house='temporary' WHERE userID=" . $_SESSION['id'] . ""; $conn->query($sql);}
+  
+  if ($result = $conn->query("SELECT SUM(`" . $_SESSION['house'] . "`) AS total FROM competitions")) /* Sum of house points */
+    {while ($row = $result->fetch_assoc())
+      {$points = $row['total'];}} // Live house points updater
 ?>
 
 <!DOCTYPE HTML>
@@ -54,8 +52,8 @@
     </div>
     
     <div class='info'>
-      <span id='points'>0<br>Points</span>
-      <span id='wins'>0<br>Wins</span>
+      <span id='points'><?php echo $points ?><br>Points</span>
+      <span id='wins'><?php echo $members ?><br>Members</span>
       <span id='attendance'>83%<br>Attendance</span>
       <span id='rank'>#0<br>Rank</span>
     </div>
