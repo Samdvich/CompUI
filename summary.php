@@ -24,11 +24,11 @@
   else
     {echo "<p class='response'> Error updating record:</p>" . $conn->error;}}
     
-  $secure = $conn->prepare('SELECT colour, points, members FROM houses WHERE house = ?');
+  $secure = $conn->prepare('SELECT colour, members FROM houses WHERE house = ?');
   $secure->bind_param('s', $_SESSION['house']);
   $secure->execute();
   $secure->store_result();
-  $secure->bind_result($house_color, $points, $members);
+  $secure->bind_result($house_color, $members);
   $secure->fetch();
         
   if ($_SESSION['type'] == "temp")
