@@ -31,7 +31,7 @@
   $secure->bind_result($house_color, $members);
   $secure->fetch();
   
-  if ($_SESSION['house'] = 'temporary')
+  if ($_SESSION['house'] == 'temporary')
     {$house_color = 'lightgray';}
         
   if ($_SESSION['type'] == "temp")
