@@ -30,18 +30,15 @@
   $secure->store_result();
   $secure->bind_result($house_color, $members);
   $secure->fetch();
-  
-  if ($_SESSION['house'] == 'temporary')
-    {$house_color = 'lightgray';}
         
   if ($_SESSION['type'] == "temp")
     {$sql = "UPDATE accounts SET house='temporary' WHERE userID=". $_SESSION['id'] .""; $conn->query($sql);}
   
-  if ($result = $conn->query("SELECT SUM(`". $_SESSION['house'] ."`) AS total FROM competitions")) /* Sum of house points */
-    {while ($row = $result->fetch_assoc())
-      {$points = $row['total'];}} // Live house points updater
-  else
-  {$points = 0;}
+  if ($result = $conn->query("SELECT SUM(`". $_SESSION['house'] ."`) AS total FROM competitions"))
+    while ($row = $result->fetch_assoc())
+      {$points = $row['total'];}
+    else
+      {$points = 0;}
       
   if ($result = $conn->query("SELECT COUNT(`". $_SESSION['house'] ."`) AS count FROM competitions WHERE (`". $_SESSION['house'] ."`) >0"))
     {while ($row = $result->fetch_assoc())
@@ -52,6 +49,9 @@
   if ($result = $conn->query("SELECT COUNT('house') AS members FROM accounts WHERE house = '". $_SESSION['house'] ."';"))
     {while ($row = $result->fetch_assoc())
       {$members = $row['members'];}}
+      
+  if ($_SESSION['house'] == 'temporary')
+    {$house_color = 'lightgray'; $points = "N/A"; $events = "N/A";}
 ?>
 
 <!DOCTYPE HTML>
