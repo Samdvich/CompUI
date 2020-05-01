@@ -13,7 +13,7 @@
     else
       {$database_variable = "Connected";}
     
-    if ($_SESSION['type'] !== "admin") // Authenticate
+    if ($_SESSION['type'] !== "admin")
       {header("Location: ../summary.php");}
       
     $secure = $conn->prepare('SELECT colour, members FROM houses WHERE house = ?');
@@ -35,9 +35,64 @@
       <p id='heading'><?php echo $_SESSION['house']; ?></p>
     </div>
     
-    <div class='new-comp'>
-        <!-- ... -->
+    <div class='left'>
+      <div class='button' id='create-button'><a id='button-content' href='accounts.php?choice=create-button'>Create</a></div>
+      <div class='button' id='view-button'><a id='button-content' href='accounts.php?choice=view-button'>View</a></div>
+      <div class='button' id='delete-button'><a id='button-content' href='accounts.php?choice=delete-button'>Delete</a></div>
+      <div class='line'></div>
+      <div class='welcome'><p>Welcome <br><?php echo $_SESSION['type']; ?></p></div>
+      <div class='button' id='admin-change-button'><a id='button-content' href='accounts.php?choice=admin-change-button'>Change</a></div>
     </div>
+    
+    <div class='frame'></div>
+    
+    <?php
+    if (isset($_GET['choice']))
+    {if ($_GET['choice'] == 'create-button')
+    {echo
+    "<div class='frame'>
+    <p id='warning-message'>You selected create! ^-^</p>
+    </div>
+    
+    <style>
+      .frame { grid-row: 2; grid-column: 2; height: 90%; width: 90%; border: 5px solid black; border-radius: 80px; margin: auto; }
+    
+      #warning-message { display: flex; height: 100%; justify-content: center; align-items: center; font-family: Raleway; font-weight: 700; }
+    </style>";}
+    if ($_GET['choice'] == 'view-button')
+    {echo
+    "<div class='frame'>
+    <p id='warning-message'>You selected view! ^-^</p>
+    </div>
+    
+    <style>
+      .frame { grid-row: 2; grid-column: 2; height: 90%; width: 90%; border: 5px solid black; border-radius: 80px; margin: auto; }
+    
+      #warning-message { display: flex; height: 100%; justify-content: center; align-items: center; font-family: Raleway; font-weight: 700; }
+    </style>";}
+    if ($_GET['choice'] == 'delete-button')
+    {echo
+    "<div class='frame'>
+    <p id='warning-message'>You selected delete! ^-^</p>
+    </div>
+    
+    <style>
+      .frame { grid-row: 2; grid-column: 2; height: 90%; width: 90%; border: 5px solid black; border-radius: 80px; margin: auto; }
+    
+      #warning-message { display: flex; height: 100%; justify-content: center; align-items: center; font-family: Raleway; font-weight: 700; }
+    </style>";}
+    if ($_GET['choice'] == 'admin-change-button')
+    {echo
+    "<div class='frame'>
+    <p id='warning-message'>You selected change ~ for ". $_SESSION['type'] ."s! ^-^</p>
+    </div>
+    
+    <style>
+      .frame { grid-row: 2; grid-column: 2; height: 90%; width: 90%; border: 5px solid black; border-radius: 80px; margin: auto; }
+    
+      #warning-message { display: flex; height: 100%; justify-content: center; align-items: center; font-family: Raleway; font-weight: 700; }
+    </style>";}}
+    ?>
     
     <style>
       @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
@@ -47,29 +102,25 @@
       
       html, body { display: grid; margin: 0; padding: 0; height: 100%; width: 100%; }
       
-      body { grid-template-rows: 18% 80%; grid-template-columns: 30% 50% 20%; }
+      body { grid-template-rows: 18% 80%; grid-template-columns: 20% auto; }
       
-      .header { grid-row: 1; grid-column: 1 / 4; background-color: <?php echo $house_color; ?>; height: 100%; width: 100%; font-family: 'Bungee', regular; display: grid; grid-template-columns: 8% auto 8%; }
+      .header { grid-row: 1; grid-column: 1 / 3; background-color: <?php echo $house_color; ?>; height: 100%; width: 100%; font-family: 'Bungee', regular; display: grid; grid-template-columns: 8% auto 8%; }
       
       #home { grid-column: 1; color: white; margin: auto; }
       
       #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; }
       
-      .competition-table { width: 100%; font-family: 'Bungee', regular; font-size: 200%; }
+      .left { grid-row: 2; display: grid; grid-template-rows: 3% repeat(3, 18%) 5% auto 18%; }
       
-      .new-comp { box-sizing: border-box; padding: 5%; grid-row: 2; grid-column: 1; height: 80%; width: 80%; background-color: <?php echo $house_color ?>; margin: auto; }
+      .button { box-sizing: border-box; width: 65%; height: 45%; border-radius: 20px; background-color: <?php echo $house_color ?>; margin: auto; }
       
-      #event { font-family: 'Raleway'; font-weight: 200; }
+      #button-content { display: flex; height: 100%; justify-content: center; align-items: center; color: white; font-family: Raleway; font-weight: 700; }
       
-      #event-label { display: grid; color: white; font-family: 'Raleway'; font-size: 120%; margin-left: 5%; }
-        
-      #event-name-field { display: grid; border-radius: 50px; border: 0 solid transparent; width: 90%; height: 45px; font-size: 150%; padding-left: 5%; padding-right: 5%; font-family: 'Raleway'; text-transform: capitalize; margin-top: 4%; }
+      #create-button { grid-row: 2; } #view-button { grid-row: 3; } #delete-button { grid-row: 4; } #admin-change-button { grid-row: 7; margin-top: 0; }
       
-      #event-button { all: unset; display: grid; font-family: Bungee; font-size: 155%; color: white; margin: auto; margin-top: 5%; }
+      .line { grid-row: 5; background-color: black; height: 1%; width: 80%; margin: auto; margin-bottom: 0; }
       
-      #event-button:hover { color: whitesmoke; }
-      
-      #event-create-button:active { font-size: 140%; }
+      .welcome { grid-row: 6; font-size: 150%; font-weight: 200; font-family: Raleway; text-align: center; margin: auto; margin-bottom: 0;}
       
       a { all: unset; cursor: pointer; }
     </style>
