@@ -28,6 +28,7 @@
 <html>
   <head>
     <title>Admin | Competitions</title>
+    <meta name="viewport" content="width=500, initial-scale=1">
   </head>
   <body>
     <div class='header'>

@@ -58,6 +58,7 @@
 <html lang='en'>
   <head>
     <title>CompUI Panel</title>
+    <meta name="viewport" content="width=500, initial-scale=1">
   </head>
   <body>
     <div class='header'>
@@ -114,6 +115,18 @@
       .navmenu input { all: unset; font-family: 'Bungee', regular; font-size: 200%; cursor: pointer; color: gray; }
           
       .navmenu input:hover { color: <?php echo $house_color; ?>;}
+      
+      @media (min-width: 481px) and (max-width: 767px) {
+        .info { font-size: 40%; }
+        .navmenu { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
+        .navmenu input { font-size: 120%; }
+        #heading { font-size: 160%; }
+      }
+      
+      @media (min-width: 767px) and (max-width: 1090px) {
+        .info { font-size: 60%; }
+        .navmenu input { font-size: 160%; }
+      }
     </style>
   </body>
 </html>

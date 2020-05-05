@@ -28,6 +28,7 @@
 <html>
   <head>
     <title>Accounts | Admin</title>
+    <meta name="viewport" content="width=500, initial-scale=1">
   </head>
   <body>
     <div class='header'>
@@ -135,6 +136,26 @@
       .welcome { grid-row: 6; font-size: 150%; font-weight: 200; font-family: Raleway; text-align: center; margin: auto; margin-bottom: 0;}
       
       a { all: unset; cursor: pointer; }
+      
+      @media (min-width: 481px) and (max-width: 767px) {
+        #csv_text { display: none; }
+        .import_csv { grid-template-columns: 0; }
+        #heading { font-size: 170%; }
+        .welcome { font-size: 150%; margin-top: 5%; }
+        .button { width: 80%; height: 55%; }
+        .left { grid-template-rows: 15% repeat(3, 12%) 5% 18%; }
+        #button-content { font-size: 110%; }
+      }
+      
+      @media (min-width: 767px) and (max-width: 1090px) {
+        #csv_text { display: none; }
+        .import_csv { grid-template-columns: 0; }
+        #heading { font-size: 270%; }
+        .welcome { font-size: 170%; margin-top: 5%; }
+        .button { width: 80%; height: 70% }
+        .left { grid-template-rows: 12% repeat(3, 13%) 5% 18%; }
+        #button-content { font-size: 140%; }
+      }
     </style>
   </body>
 </html>
