@@ -33,6 +33,12 @@
     <div class='header'>
       <a href='../summary.php' id='home'><svg class="bi bi-house-fill" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.293 1.5a1 1 0 011.414 0l6.647 6.646a.5.5 0 01-.708.708L8 2.207 1.354 8.854a.5.5 0 11-.708-.708L7.293 1.5z" clip-rule="evenodd"/></svg></a>
       <p id='heading'><?php echo $_SESSION['house']; ?></p>
+      <div class='import_csv'>
+        <p id='csv_text'>Upload CSV</p>
+        <a id='csv_icon' href='upload'>
+          <svg class="bi bi-file-arrow-up" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 1h8a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V3a2 2 0 012-2zm0 1a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V3a1 1 0 00-1-1H4z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M4.646 7.854a.5.5 0 00.708 0L8 5.207l2.646 2.647a.5.5 0 00.708-.708l-3-3a.5.5 0 00-.708 0l-3 3a.5.5 0 000 .708z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M8 12a.5.5 0 00.5-.5v-6a.5.5 0 00-1 0v6a.5.5 0 00.5.5z" clip-rule="evenodd"/></svg>
+        </a>
+      </div>
     </div>
     
     <div class='left'>
@@ -104,11 +110,17 @@
       
       body { grid-template-rows: 18% 80%; grid-template-columns: 20% auto; }
       
-      .header { grid-row: 1; grid-column: 1 / 3; background-color: <?php echo $house_color; ?>; height: 100%; width: 100%; font-family: 'Bungee', regular; display: grid; grid-template-columns: 8% auto 8%; }
+      .header { grid-row: 1; grid-column: 1 / 3; background-color: <?php echo $house_color; ?>; height: 100%; width: 100%; font-family: 'Bungee', regular; display: grid; grid-template-columns: 30% auto 30%; }
       
-      #home { grid-column: 1; color: white; margin: auto; }
+      #home { grid-column: 1; color: white; margin: auto; margin-left: 3%; }
       
-      #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; }
+      #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; line-height: 0; }
+      
+      .import_csv { grid-row: 1; grid-column: 3; height: 50px; width: 35%; background-color: white; border-radius: 20px; margin: auto; margin-right: 10%; display: grid; grid-template-columns: 75% 25%; }
+      
+      #csv_text { grid-column: 1; margin: auto; font-family: Raleway; padding: 10%; padding-right: 1%; }
+      
+      #csv_icon { grid-column: 2; padding: 10%; margin: auto; padding-top: 15%; }
       
       .left { grid-row: 2; display: grid; grid-template-rows: 3% repeat(3, 18%) 5% auto 18%; }
       
