@@ -13,8 +13,9 @@
     else
       {$database_variable = "Connected";}
     
-    if ($_SESSION['type'] !== "admin") // Authenticate
-      {header("Location: ../summary.php");}
+    if (!in_array($_SESSION['type'], array('admin','teacher','hoh'), true)) // Authenticate
+      {header("Location: ../summary.php"); exit;}
+    else {$house_color = 'darkgray';}
     
     $secure = $conn->prepare('SELECT colour FROM houses WHERE house = ?');
     $secure->bind_param('s', $_SESSION['house']);
@@ -36,16 +37,16 @@
     </div>
     <div class='overflow-table'>
     <?php
-      $sql = "SELECT event FROM competitions";
+      $sql = "SELECT event_name FROM competitions";
       $result = mysqli_query($conn, $sql);
       echo '<table class="competition-table">';
         
       if (mysqli_num_rows($result) > 0) // output data of each row
         {while($row = mysqli_fetch_assoc($result))
-          {$eventname = $row["event"]; $secure = $conn->prepare("SELECT `bilin bilin`, `barnes`, `francis`, `karle` FROM competitions WHERE event = ?"); $secure->bind_param('s', $eventname); $secure->execute(); $secure->store_result(); $secure->bind_result($bilin_bilin, $barnes, $francis, $karle); $secure->fetch();
-          echo '<tr>
-          <td id="event"><a href=../event.php?name=' . urlencode($eventname) . '>' . $eventname . '</a></td>
-          <td id="spacer"></td>
+          {$eventname = $row["event_name"]; $secure = $conn->prepare("SELECT `bilin bilin`, `barnes`, `francis`, `karle`, `visible` FROM competitions WHERE event_name = ?"); $secure->bind_param('s', $eventname); $secure->execute(); $secure->store_result(); $secure->bind_result($bilin_bilin, $barnes, $francis, $karle, $visible); $secure->fetch();
+          echo '<tr>';
+          if ($visible == "TRUE") { echo '<td id="event"><a href=../head-of-house/event.php?name=' . urlencode($eventname) . '>' . $eventname . '</a></td>'; } else { echo '<td id="event" style="color: darkgreen;"><a href=../head-of-house/event.php?name=' . urlencode($eventname) . '>' . $eventname . ' &#x2713;</a></td>'; }
+          echo '<td id="spacer"></td>
           <td id="bilin-bilin">' . $bilin_bilin . '</td>
           <td id="barnes">' . $barnes . '</td>
           <td id="francis">' . $francis . '</td>
@@ -62,21 +63,20 @@
     <div class='new-comp'>
     
     <?php
-      $issue = "no issues";
-        
       if ((isset($_POST['new-event-button'])) && (!empty($_POST['new-event-name'])))
         {$new_event_name = ucwords($_POST['new-event-name']);
-        if ($secure = $conn->prepare("INSERT INTO competitions(event) VALUES(?)"))
-          {$secure->bind_param('s', $new_event_name); $secure->execute(); $secure->close(); header('Location:competitions.php'); /* Refresh to show live update */ exit();} // Stop it from refreshing and inserting the data again
-      else
-        {$issue = "new event field empty";}}
-        
+        if ($secure = $conn->prepare("INSERT INTO competitions(event_name) VALUES(?)"))
+          {$secure->bind_param('s', $new_event_name); $secure->execute(); $secure->close(); header('Location:competitions.php'); /* Refresh to show live update */ exit();}} // Stop it from refreshing and inserting the data again
+    
       if ((isset($_POST['delete-event-button'])) && (!empty($_POST['delete-event-name'])))
-        {$delete_event_name = ucwords($_POST['delete-event-name']);
-        if ($secure = $conn->prepare("DELETE FROM competitions WHERE event = ?"))
-          {$secure->bind_param('s', $delete_event_name); $secure->execute(); $secure->close(); header('Location:competitions.php'); /* Refresh to show live update */ exit();} // Stop it from refreshing and inserting the data again
-      else
-        {$issue = "delete event field empty";}}
+        {if ($secure = $conn->prepare('DELETE FROM competitions WHERE event_name = ?'))
+          {$delete_event_name = ucwords($_POST['delete-event-name']);
+          $secure->bind_param('s', $delete_event_name);
+          $disable_fk = "SET FOREIGN_KEY_CHECKS = 0;"; $result = mysqli_query($conn, $disable_fk);
+          $purge_fk_associates = $conn->prepare("DELETE FROM competition_results WHERE eventID = (SELECT eventID FROM competitions WHERE event_name = ?)"); $purge_fk_associates->bind_param('s', $delete_event_name); $purge_fk_associates->execute(); $purge_fk_associates->close(); // Manual Cascade Deletion (Does not work through PHPMyAdmin)
+          $secure->execute(); $secure->close();
+          $enable_fk = "SET FOREIGN_KEY_CHECKS = 1;"; $result = mysqli_query($conn, $enable_fk);
+          header('Location:competitions.php'); exit();}} // Stop it from refreshing and inserting the data again
     ?>
         
     <form id='event-form' method='POST' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
@@ -85,10 +85,9 @@
       <input name='new-event-button' id='event-button' type='submit' value='create'><br>
     </form>
     <form id='event-form' method='POST' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
-      <label id='event-label'>Delete Event</label>
+      <label id='event-label'>Destroy Event</label>
       <input name='delete-event-name' id='event-name-field' type='text' autocapitalize="word">
       <input name='delete-event-button' id='event-button' type='submit' value='delete'>
-      <label name='delete-issue' id='issue-label'><?php echo $issue; ?></label>
     </form>
     </div>
     
@@ -108,15 +107,15 @@
       
       #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; }
       
-      .overflow-table { grid-row: 2; grid-column: 2; width: 100%; height: 75%; overflow: auto; margin: auto; white-space: nowrap; }
+      .overflow-table { grid-row: 2; <?php if (in_array($_SESSION['type'], array('teacher','hoh'), true)) { echo "grid-column: 1 / 3; margin: auto; margin-right: 0; width: 93%;"; } else { echo "grid-column: 2; width: 100%; margin: auto;"; } ?>  height: 75%; overflow: auto; white-space: nowrap; }
       
       .competition-table { width: 100%; font-family: 'Bungee', regular; font-size: 200%; }
       
-      .vl { grid-row: 2; grid-column: 3;border-left: 2px solid black; height: 80%; margin: auto;margin-left: 10%; }
+      .vl { grid-row: 2; grid-column: 3; border-left: 2px solid black; height: 80%; margin: auto; margin-left: 10%; }
       
       #spacer { width: 50%; }
       
-      .new-comp { box-sizing: border-box; padding: 5%; grid-row: 2; grid-column: 1; height: 80%; width: 80%; background-color: <?php echo $house_color ?>; margin: auto; }
+      .new-comp { box-sizing: border-box; padding: 5%; grid-row: 2; grid-column: 1; height: 80%; width: 80%; background-color: <?php echo $house_color . "; "; if (in_array($_SESSION['type'], array('hoh','teacher'), true)) { echo "display: none;"; } ?> margin: auto; }
       
       #event { font-family: 'Raleway'; font-weight: 200; }
       

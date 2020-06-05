@@ -19,12 +19,12 @@
   </head>
 
     <?php
-      if ($secure = $conn->prepare('SELECT userID, house, type, password FROM accounts WHERE email = ?')) // prevent SQL injection
+      if ($secure = $conn->prepare('SELECT house, type, password FROM accounts WHERE email = ?')) // prevent SQL injection
         {$secure->bind_param('s', $_POST['user-field']); /* s = string, i = int, b = blob */ $secure->execute(); /* run the query */ $secure->store_result();
         if ($secure->num_rows > 0) /* if there is a result */
-          {$secure->bind_result($id, $house, $type, $password); /* bind to variables */ $secure->fetch();
+          {$secure->bind_result($house, $type, $password); /* bind to variables */ $secure->fetch();
           if (password_verify($_POST['password-field'], $password))
-            {session_start(); $_SESSION['loggedin'] = TRUE; $_SESSION['name'] = $_POST['user-field']; $_SESSION['id'] = $id; $_SESSION['house'] = $house; $_SESSION['type'] = $type; header('Location: index.php');}
+            {session_start(); $_SESSION['loggedin'] = TRUE; $_SESSION['name'] = $_POST['user-field']; $_SESSION['house'] = $house; $_SESSION['type'] = $type; $_SESSION['email'] = $_POST['user-field']; header('Location: index.php'); exit();}
           else
             {$ffs_variable = 'Incorrect Password';}}
         else

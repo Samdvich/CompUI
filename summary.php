@@ -10,14 +10,43 @@
      
   if ($conn->connect_error) // Check connection
     {die("Not Connected: <br>" . $conn->connect_error);}
+  
   else
     {$database_variable = "Connected";}
     
   if (!isset($_SESSION['name'])) // Authenticate
-    {header("Location: index.php");}
+    {header("Location: index.php"); exit;}
+    
+    $quick_change = "<form class='house-form' method='POST'>
+    <input type='submit' name='house-change' value='bilin bilin'>
+    <input type='submit' name='house-change' value='barnes'>
+    <input type='submit' name='house-change' value='francis'>
+    <input type='submit' name='house-change' value='karle'>";
+            
+    if ($_SESSION['type'] == "temp")
+        {echo $quick_change . " <input type='submit' name='house-change' value='temporary'> </form>";}
+      elseif ($_SESSION['type'] == "admin")
+        {echo "</form> <form class='navmenu' method='POST'>
+        <input type='submit' formaction='admin/competitions.php' value='Event Creation'>
+        <input type='submit' formaction='accounts.php' value='Accounts'>
+        <input type='submit' formaction='admin/notices.php' value='Notices'> </form>";}
+      elseif ($_SESSION['type'] == "teacher")
+        {echo "</form> <form class='navmenu' method='POST'>
+        <input type='submit' formaction='admin/competitions.php' value='Event Results'>
+        <input type='submit' formaction='accounts.php' value='Students'>
+        <input type='submit' formaction='teacher/test-csv.php' value='Test CSV'> </form>";
+        }
+      elseif ($_SESSION['type'] == "hoh")
+        {echo "</form> <form class='navmenu' method='POST'>
+        <input type='submit' formaction='admin/competitions.php' value='Event Finalisation' style='grid-column: 2; grid-row: 2;'>
+        <input type='submit' formaction='accounts.php' value='Accounts' style='grid-column: 2; grid-row: 3;'> </form>";}
+      elseif ($_SESSION['type'] == "student")
+        {echo "</form> <form class='navmenu' method='POST'> </form>";}
+    else
+      {header("Location: login.php"); exit;}
 
   if (isset($_POST['house-change']))
-    {unset($_SESSION['house']); /* Instead of resetting the entire session, only reset important variables */ $sql = "UPDATE accounts SET house='" . $_POST['house-change'] . "' WHERE userID=" . $_SESSION['id'] . ""; $_SESSION['house'] = $_POST['house-change'];
+    {unset($_SESSION['house']); /* Instead of resetting the entire session, only reset important variables */ $sql = "UPDATE accounts SET house='" . $_POST['house-change'] . "' WHERE email='" . $_SESSION['email'] . "'"; $_SESSION['house'] = $_POST['house-change'];
     
   if ($conn->query($sql) === TRUE)
     {echo "<p class='response'>Record updated successfully</p>";}
@@ -32,7 +61,7 @@
   $secure->fetch();
         
   if ($_SESSION['type'] == "temp")
-    {$sql = "UPDATE accounts SET house='temporary' WHERE userID=". $_SESSION['id'] .""; $conn->query($sql);}
+    {$sql = "UPDATE accounts SET house='temporary' WHERE email=". $_SESSION['email'] .""; $conn->query($sql);}
   
   if ($result = $conn->query("SELECT SUM(`". $_SESSION['house'] ."`) AS total FROM competitions"))
     while ($row = $result->fetch_assoc())
@@ -49,9 +78,11 @@
   if ($result = $conn->query("SELECT COUNT('house') AS members FROM accounts WHERE house = '". $_SESSION['house'] ."';"))
     {while ($row = $result->fetch_assoc())
       {$members = $row['members'];}}
+  else
+  {$points = 0;}
       
-  if ($_SESSION['house'] == 'temporary')
-    {$house_color = 'lightgray'; $points = "N/A"; $events = "N/A";}
+  if (!in_array($_SESSION['house'], array('bilin bilin', 'barnes', 'francis', 'karle'), true))
+    {$house_color = 'darkgray'; $points = "N/A"; $events = "N/A";}
 ?>
 
 <!DOCTYPE HTML>
@@ -66,31 +97,15 @@
     </div>
     
     <div class='info'>
-      <span id='points'><?php echo $points ?><br>Points</span>
+      <span id='points'><?php if (!empty($points)) { echo $points; } else { echo "N/A"; } ?><br>Points</span>
       <span id='members'><?php echo $members ?><br>Members</span>
       <span id='attendance'>N/A<br>Attendance</span>
       <span id='events'><?php echo $events ?><br>Events</span>
     </div>
         
-    <?php
-      $quick_change = "<form class='house-form' method='POST'>
-        <input type='submit' name='house-change' value='bilin bilin'>
-        <input type='submit' name='house-change' value='barnes'>
-        <input type='submit' name='house-change' value='francis'>
-        <input type='submit' name='house-change' value='karle'>";
-            
-      if ($_SESSION['type'] == "temp")
-        {echo $quick_change . " <input type='submit' name='house-change' value='temporary'> </form>";}
-      elseif ($_SESSION['type'] == "admin")
-        {echo $quick_change . "</form> <form class='navmenu' method='POST'>
-        <input type='submit' formaction='admin/competitions.php' value='Competitions'>
-        <input type='submit' formaction='admin/accounts.php' value='Accounts'>
-        <input type='submit' formaction='admin/notices.php' value='Notices'> </form>";}
-    ?>
-        
     <style>
       @import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
-          
+
       html, body { display: grid; margin: 0; padding: 0; height: 100%; width: 100%; }
           
       body { grid-template-rows: 18% 6% 30% 30% 6%; }
