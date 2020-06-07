@@ -34,7 +34,7 @@
         {echo "</form> <form class='navmenu' method='POST'>
         <input type='submit' formaction='admin/competitions.php' value='Event Results'>
         <input type='submit' formaction='accounts.php' value='Students'>
-        <input type='submit' formaction='teacher/test-csv.php' value='Test CSV'> </form>";
+        <input type='submit' formaction='teacher/csv-upload.php' value='Students CSV'> </form>";
         }
       elseif ($_SESSION['type'] == "hoh")
         {echo "</form> <form class='navmenu' method='POST'>
@@ -68,6 +68,12 @@
       {$points = $row['total'];}
     else
       {$points = 0;}
+  
+  if ($_SESSION['type'] == "admin") {
+    $result = $conn->query("SELECT SUM(`bilin Bilin`) AS bbpoints, SUM(`Barnes`) AS bpoints, SUM(`Francis`) AS fpoints, SUM(`Karle`) AS kpoints
+FROM `competitions`;");
+    $housepoints = $result->fetch_assoc();
+  }
       
   if ($result = $conn->query("SELECT COUNT(`". $_SESSION['house'] ."`) AS count FROM competitions WHERE (`". $_SESSION['house'] ."`) >0"))
     {while ($row = $result->fetch_assoc())
@@ -97,10 +103,19 @@
     </div>
     
     <div class='info'>
-      <span id='points'><?php if (!empty($points)) { echo $points; } else { echo "N/A"; } ?><br>Points</span>
-      <span id='members'><?php echo $members ?><br>Members</span>
-      <span id='attendance'>N/A<br>Attendance</span>
-      <span id='events'><?php echo $events ?><br>Events</span>
+    <?php
+    if ($_SESSION['type'] !== "admin") {
+      echo "<span id='infoone'>"; if (!empty($points)) { echo $points; } else { echo "N/A"; } echo "<br>Points</span>";
+      echo "<span id='infotwo'>"; echo $members; echo "<br>Members</span>";
+      echo "<span id='infothree'>N/A<br>Attendance</span>";
+      echo "<span id='infofour'>"; echo $events; echo "<br>Events</span>";
+    } else {
+      echo "<span id='infoone'>"; echo $housepoints['bbpoints']; echo "<br>Bilin Bilin Points</span>";
+      echo "<span id='infotwo'>"; echo $housepoints['bpoints']; echo "<br>Barnes Points</span>";
+      echo "<span id='infothree'>"; echo $housepoints['fpoints']; echo "<br>Francis Points</span>";
+      echo "<span id='infofour'>"; echo $housepoints['kpoints']; echo "<br>Karle Points</span>";
+    }
+    ?>
     </div>
         
     <style>
