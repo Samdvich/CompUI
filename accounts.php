@@ -153,7 +153,7 @@
         </div>";
       }
       if ($_GET['choice'] == 'view-button')
-        {$sql = "SELECT email, type, house FROM accounts;";        
+        {$sql = "SELECT email, type, house FROM accounts ORDER BY 'type';";        
         $result = mysqli_query($conn, $sql);
     
         if (mysqli_num_rows($result) > 0) {
