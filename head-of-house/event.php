@@ -1,15 +1,7 @@
 <?php
     session_start();
 
-    $servername = "localhost";
-    $username = "spage65";
-    $password = "Password1";
-    $DB_Name = "spage65_CompUI"; # Using 2020 PHP Default BCRYPT Hash = password_hash($password, PASSWORD_BCRYPT)
-
-    $conn = new mysqli($servername, $username, $password, $DB_Name); // Create connection
-     
-    if ($conn->connect_error) // Test connection
-      {die("Not Connected: <br>" . $conn->connect_error);}
+    include "../admin/config.php";
     
     if (!in_array($_SESSION['type'], array("admin", "teacher", "hoh"), true)) // Authenticate user
       {header("Location: ../index.php"); exit();}
@@ -27,6 +19,7 @@
       {$house_color = 'darkgray';}
       
     $eventname = $_GET['name'];
+    $_SESSION['eventname'] = $eventname;
     
     $secure = $conn->prepare('SELECT eventID, visible FROM competitions WHERE event_name = ?');
     $secure->bind_param('s', $eventname);
@@ -56,21 +49,22 @@
       $count = 0;
       echo "
       <div class='overflow-table'>
-      <table class='student-table'>";
+      <table class='student-table'>
+      <form method='GET'>";
       while($row = mysqli_fetch_assoc($result)) {
-        // print_r($row); // debugging the array content
+        // print_r($row); // debugging the array content 
         $eventID = $row["eventID"];
         $secure = $conn->prepare("SELECT `eventID`, `student_name`, `house`, `time` FROM competition_results WHERE eventID = (SELECT eventID FROM competitions WHERE event_name = ?)");
-        $secure->bind_param('s', $eventname);
-        $secure->execute();
-        $secure->store_result();
-        $secure->bind_result($eventID, $student_name, $house, $time);
+        $secure->bind_param('s', $eventname); 
+        $secure->execute(); 
+        $secure->store_result(); 
+        $secure->bind_result($eventID, $student_name, $house, $time); 
         $secure->fetch();
         $count++;
-        echo "
-          <tr>
-          <td id='studentname'>" . $count . ". " . $row["student_name"] . "</a></td>
-          <td id='house'>" . $row["house"] . "</td>
+        echo "<tr><td id='studentname'>" . $count . " " . "<input id='table_sname' name='student' value='". $row["student_name"] ."'  ";
+         if ((mysqli_num_rows($result) == 0) || $visible == "FALSE") { echo "type='button'>"; } else { echo "formaction='../head-of-house/delete.php?student=". urlencode($row['student_name']) ."' type='submit'>"; } 
+        echo "</td>";
+        echo "<td id='house'>" . $row["house"] . "</td>
           <td id='time'>" . $row["time"] . "</td>
           </tr>";
         if (isset($_POST['finalise'])) {
@@ -81,7 +75,7 @@
             $points = 6;
           }
           elseif ($count == 3) {
-            $points = 4;
+            $points = 4; 
           }
           elseif ($count == 4) {
             $points = 2;
@@ -91,12 +85,12 @@
           }
           $sql = 'UPDATE competitions SET `'.$row['house'].'` = `'.$row['house'].'` + '.$points.', `visible` = "FALSE" WHERE eventID = '.$eventID.';'; // WHERE eventID = (SELECT eventID FROM competitions WHERE event_name = " . $eventname . ");";
           mysqli_query($conn, $sql);
-          echo "<meta http-equiv='refresh' content='3;../admin/competitions.php'>";
+          echo "<meta http-equiv='refresh' content='1;../admin/competitions.php'>";
         }
-      }
-      echo "</table></div>
+      } 
+      echo "</form></table></div>
       <form method='POST' class='finaliseform'>
-      <input id='finalise' name='finalise' value='Finalise'";
+      <input id='finalise' name='finalise' value='Finalise'"; 
       if ((mysqli_num_rows($result) == 0) || $visible == "FALSE") { echo "type='button'>"; } else { echo "type='submit'>"; }
       echo "</form>";
     }
@@ -124,7 +118,7 @@
 
       if (isset($_POST['submitupdate']))
         {$secure = $conn->prepare('INSERT INTO competition_results(eventID, student_name, house, time) VALUES((SELECT eventID FROM competitions WHERE event_name = "' . $_GET['name'] . '"), ?, ?, ?)');
-        $secure->bind_param('sss', $_POST['studentname'], $_POST['studenthouse'], $_POST['studenttime']); $secure->execute(); $secure->close(); echo "<meta http-equiv='refresh' content='1;'>"; /* Refresh to show live update */ }
+        $secure->bind_param('sss', htmlentities($_POST['studentname']), $_POST['studenthouse'], $_POST['studenttime']); $secure->execute(); $secure->close(); echo "<meta http-equiv='refresh' content='1;'>"; /* Refresh to show live update */ }
     ?>
     
     <style>
@@ -146,6 +140,8 @@
       .left { display: grid; grid-template-rows: 80% 20%; }
       
       .overflow-table { grid-row: 1; grid-column: 1; margin-top: 7%; overflow: scroll; height: 78%; white-space: nowrap; padding-left: 5%; padding-right: 5%; display: grid; grid-template-rows: 85% 10% 5%; }
+      
+      #table_sname { all: unset; <?php if ((mysqli_num_rows($result) == 0) || $visible == "FALSE") { echo "cursor: default;"; } else { echo "cursor: url('../icons/del.png'), not-allowed;"; } ?> }
       
       .student-table { font-family: 'Raleway', regular; font-size: 200%; }
       
@@ -169,15 +165,17 @@
       
       #stimelabel { grid-row: 3; grid-column: 1; } #stime { grid-row: 3; grid-column: 1; }
       
-      #submitupdate { grid-row: 4; grid-column: 1; border: 2px solid black; border-radius: 20px; width: 110px; height: 100%; margin: auto; font-family: 'Raleway', regular; }
+      #submitupdate { grid-row: 4; grid-column: 1; border: 2px solid black; border-radius: 20px; width: 100px; height: 50px; margin: auto; font-family: 'Raleway', regular; } #submitupdate[type='submit']:hover { font-weight: 500; cursor: pointer; background-color: #D7D7D7; }
       
       #submitupdate[type='button'] { background-color: lightgray; border-color: darkgray; color: darkgray; cursor: not-allowed; }
       
       .finaliseform { grid-row: 2; display: grid; }
       
-      #finalise { border: 2px solid black; border-radius: 20px; width: 110px; height: 50%; margin: auto; font-family: 'Raleway', regular; }
+      #finalise { border: 2px solid black; border-radius: 20px; width: 100px; height: 50px; margin: auto; font-family: 'Raleway', regular; } #finalise[type='submit']:hover { font-weight: 500; cursor: pointer; background-color: #D7D7D7; }
       
       #finalise[type='button'] { background-color: lightgray; border-color: darkgray; color: darkgray; cursor: not-allowed; }
+      
+      <?php if($_SESSION['type'] == "teacher") { echo ".finaliseform, #finalise, #finalise[type='button'] { display: none; }"; } ?>
       
     </style>
   </body>

@@ -1,14 +1,10 @@
 <?php
-  $servername = "localhost";
-  $username = "spage65";
-  $password = "Password1";
-  $DB_Name = "spage65_CompUI"; # Using 2020 PHP Default BCRYPT Hash = password_hash($password, PASSWORD_BCRYPT)
-  
-  $conn = new mysqli($servername, $username, $password, $DB_Name); # Connection
-     
-  if ($conn->connect_error) # Testing Connection
-    {$database_status = '<svg class="bi bi-bar-chart" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2zm-2-1a1 1 0 00-1 1v12a1 1 0 001 1h2a1 1 0 001-1V2a1 1 0 00-1-1h-2zM6 7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 01-1 1H7a1 1 0 01-1-1V7zm-5 4a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 01-1 1H2a1 1 0 01-1-1v-3z" clip-rule="evenodd"/></svg>';}
-  else
+    include "admin/config.php";
+    
+    if ($conn->connect_error) # Testing Connection
+    {$database_status = '<svg class="bi bi-bar-chart" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2zm-2-1a1 1 0 00-1 1v12a1 1 0 001 1h2a1 1 0 001-1V2a1 1 0 00-1-1h-2zM6 7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 01-1 1H7a1 1 0 01-1-1V7zm-5 4a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 01-1 1H2a1 1 0 01-1-1v-3z" clip-rule="evenodd"/></svg>';
+    $ffs_variable = "Service Outage";}
+    else
     {$database_status = '<svg class="bi bi-bar-chart-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect width="4" height="5" x="1" y="10" rx="1"/><rect width="4" height="9" x="6" y="6" rx="1"/><rect width="4" height="14" x="11" y="1" rx="1"/></svg>';}
 ?>
 
@@ -21,16 +17,14 @@
     <?php
       if ($secure = $conn->prepare('SELECT house, type, password FROM accounts WHERE email = ?')) // prevent SQL injection
         {$secure->bind_param('s', $_POST['user-field']); /* s = string, i = int, b = blob */ $secure->execute(); /* run the query */ $secure->store_result();
-        if ($secure->num_rows > 0) /* if there is a result */
+        if (isset($_POST['user-field']))
+          {if ($secure->num_rows > 0) /* if there is a result */
           {$secure->bind_result($house, $type, $password); /* bind to variables */ $secure->fetch();
-          if (password_verify($_POST['password-field'], $password))
-            {session_start(); $_SESSION['loggedin'] = TRUE; $_SESSION['name'] = $_POST['user-field']; $_SESSION['house'] = $house; $_SESSION['type'] = $type; $_SESSION['email'] = $_POST['user-field']; header('Location: index.php'); exit();}
-          else
-            {$ffs_variable = 'Incorrect Password';}}
-        else
-          {$ffs_variable = 'Unrecognised Email';}}
-      else
-        {$ffs_variable = 'Service Outage';}
+            if (password_verify($_POST['password-field'], $password))
+                {session_start(); $_SESSION['loggedin'] = TRUE; $_SESSION['name'] = $_POST['user-field']; $_SESSION['house'] = $house; $_SESSION['type'] = $type; $_SESSION['email'] = $_POST['user-field']; header('Location: index.php'); exit();}
+            else {$ffs_variable = 'Incorrect Password';}}
+          else {$ffs_variable = 'Unrecognised Email';}}
+        else {$ffs_variable = 'Press Enter to Login';}}
     ?>
     
     <div class='database_status'><?php echo $database_status; ?></div>

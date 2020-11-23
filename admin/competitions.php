@@ -1,17 +1,7 @@
 <?php
     session_start();
 
-    $servername = "localhost";
-    $username = "spage65";
-    $password = "Password1";
-    $DB_Name = "spage65_CompUI"; # Using 2020 PHP Default BCRYPT Hash = password_hash($password, PASSWORD_BCRYPT)
-
-    $conn = new mysqli($servername, $username, $password, $DB_Name); // Create connection
-     
-    if ($conn->connect_error) // Check connection
-      {die("Not Connected: <br>" . $conn->connect_error);}
-    else
-      {$database_variable = "Connected";}
+    include "config.php";
     
     if (!in_array($_SESSION['type'], array('admin','teacher','hoh'), true)) // Authenticate
       {header("Location: ../summary.php"); exit;}
@@ -32,7 +22,7 @@
   </head>
   <body>
     <div class='header'>
-      <a href='../summary.php' id='home'><svg class="bi bi-house-fill" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.293 1.5a1 1 0 011.414 0l6.647 6.646a.5.5 0 01-.708.708L8 2.207 1.354 8.854a.5.5 0 11-.708-.708L7.293 1.5z" clip-rule="evenodd"/></svg></a>
+      <a href='../summary.php' id='home' title='Home' tabindex=1><svg class="bi bi-house-fill" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M7.293 1.5a1 1 0 011.414 0l6.647 6.646a.5.5 0 01-.708.708L8 2.207 1.354 8.854a.5.5 0 11-.708-.708L7.293 1.5z" clip-rule="evenodd"/></svg></a>
       <p id='heading'>Competitions</p>
     </div>
     <div class='overflow-table'>
@@ -64,15 +54,15 @@
     
     <?php
       if ((isset($_POST['new-event-button'])) && (!empty($_POST['new-event-name'])))
-        {$new_event_name = ucwords($_POST['new-event-name']);
+        {$new_event_name = htmlentities(ucwords($_POST['new-event-name']));
         if ($secure = $conn->prepare("INSERT INTO competitions(event_name) VALUES(?)"))
           {$secure->bind_param('s', $new_event_name); $secure->execute(); $secure->close(); header('Location:competitions.php'); /* Refresh to show live update */ exit();}} // Stop it from refreshing and inserting the data again
     
       if ((isset($_POST['delete-event-button'])) && (!empty($_POST['delete-event-name'])))
         {if ($secure = $conn->prepare('DELETE FROM competitions WHERE event_name = ?'))
-          {$delete_event_name = ucwords($_POST['delete-event-name']);
-          $secure->bind_param('s', $delete_event_name);
-          $disable_fk = "SET FOREIGN_KEY_CHECKS = 0;"; $result = mysqli_query($conn, $disable_fk);
+          {$delete_event_name = htmlentities(ucwords($_POST['delete-event-name'])); 
+          $secure->bind_param('s', $delete_event_name); 
+          $disable_fk = "SET FOREIGN_KEY_CHECKS = 0;"; $result = mysqli_query($conn, $disable_fk); 
           $purge_fk_associates = $conn->prepare("DELETE FROM competition_results WHERE eventID = (SELECT eventID FROM competitions WHERE event_name = ?)"); $purge_fk_associates->bind_param('s', $delete_event_name); $purge_fk_associates->execute(); $purge_fk_associates->close(); // Manual Cascade Deletion (Does not work through PHPMyAdmin)
           $secure->execute(); $secure->close();
           $enable_fk = "SET FOREIGN_KEY_CHECKS = 1;"; $result = mysqli_query($conn, $enable_fk);
@@ -81,13 +71,13 @@
         
     <form id='event-form' method='POST' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
       <label id='event-label'>Create Event</label>
-      <input name='new-event-name' id='event-name-field' type='text' autocapitalize="word">
-      <input name='new-event-button' id='event-button' type='submit' value='create'><br>
+      <input name='new-event-name' id='event-name-field' type='text' autocapitalize="word" maxlength='25' tabindex=2>
+      <input name='new-event-button' id='event-button' type='submit' value='create' tabindex=3><br>
     </form>
     <form id='event-form' method='POST' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
       <label id='event-label'>Destroy Event</label>
-      <input name='delete-event-name' id='event-name-field' type='text' autocapitalize="word">
-      <input name='delete-event-button' id='event-button' type='submit' value='delete'>
+      <input name='delete-event-name' id='event-name-field' type='text' autocapitalize="word" maxlength='25' tabindex=4>
+      <input name='delete-event-button' id='event-button' type='submit' value='delete' tabindex=5>
     </form>
     </div>
     
@@ -107,7 +97,7 @@
       
       #heading { grid-column: 2; font-size: 350%; color: white; margin: auto; }
       
-      .overflow-table { grid-row: 2; <?php if (in_array($_SESSION['type'], array('teacher','hoh'), true)) { echo "grid-column: 1 / 3; margin: auto; margin-right: 0; width: 93%;"; } else { echo "grid-column: 2; width: 100%; margin: auto;"; } ?>  height: 75%; overflow: auto; white-space: nowrap; }
+      .overflow-table { grid-row: 2; <?php if (in_array($_SESSION['type'], array('teacher'), true)) { echo "grid-column: 1 / 3; margin: auto; margin-right: 0; width: 93%;"; } else { echo "grid-column: 2; width: 100%; margin: auto;"; } ?>  height: 75%; overflow: auto; white-space: nowrap; }
       
       .competition-table { width: 100%; font-family: 'Bungee', regular; font-size: 200%; }
       
@@ -115,7 +105,7 @@
       
       #spacer { width: 50%; }
       
-      .new-comp { box-sizing: border-box; padding: 5%; grid-row: 2; grid-column: 1; height: 80%; width: 80%; background-color: <?php echo $house_color . "; "; if (in_array($_SESSION['type'], array('hoh','teacher'), true)) { echo "display: none;"; } ?> margin: auto; }
+      .new-comp { box-sizing: border-box; padding: 5%; grid-row: 2; grid-column: 1; height: 80%; width: 80%; background-color: <?php echo $house_color . "; "; if (in_array($_SESSION['type'], array('teacher'), true)) { echo "display: none;"; } ?> margin: auto; }
       
       #event { font-family: 'Raleway'; font-weight: 200; }
       
@@ -123,7 +113,7 @@
         
       #event-name-field { display: grid; border-radius: 50px; border: 0 solid transparent; width: 90%; height: 45px; font-size: 150%; padding-left: 5%; padding-right: 5%; font-family: 'Raleway'; text-transform: capitalize; margin-top: 4%; }
       
-      #event-button { all: unset; display: grid; font-family: Bungee; font-size: 155%; color: white; margin: auto; margin-top: 5%; }
+      #event-button { all: unset; display: grid; font-family: Bungee; font-size: 155%; color: white; margin: auto; margin-top: 5%; } #event-button:focus { text-decoration: underline; }
       
       #event-button:hover { color: whitesmoke; }
       
@@ -139,7 +129,7 @@
       
       #karle { color: navy; }
       
-      a { all: unset; cursor: pointer; }
+      #event a { all: unset; cursor: pointer; } #event a:focus { text-decoration: underline; }
     </style>
   </body>
 </html>
